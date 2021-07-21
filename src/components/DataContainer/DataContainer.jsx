@@ -9,7 +9,9 @@ import './DataContainer.scss';
 export const EMPTY_DATA = [];
 
 const DataContainer = () => {
-const [data, setData] = useState([])
+  const [data, setData] = useState([]);
+
+  console.log('data:', data);
 
   return (
     <Flex direction="column" align="center">

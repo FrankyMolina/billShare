@@ -1,24 +1,19 @@
 import { useState } from 'react';
 
-import {
-  Flex,
-  Input,
-  NumberInput,
-  NumberInputField,
-  Button,
-} from '@chakra-ui/react';
+import { Flex, Input, Button } from '@chakra-ui/react';
 
 import './Form.scss';
 
 const EMPTY_FORMSTATE = {
   name: '',
   amount: 0,
+  values: [],
 };
 
 const Form = (props) => {
   const { data, setData } = props;
   const [formState, setFormState] = useState(EMPTY_FORMSTATE);
-  const { name, amount } = formState;
+  const { name, amount, values } = formState;
 
   const handleInputChange = (ev) => {
     const { name, value } = ev.target;
@@ -29,6 +24,20 @@ const Form = (props) => {
     });
   };
 
+  const addOnClick = () => {
+    setFormState({
+      ...formState,
+      values: [...values, Number(amount)],
+      amount: '',
+    });
+  };
+
+  const nextOnClick = () => {
+    setData([...data, { name: name, values: [...values, Number(amount)] }]);
+    setFormState(EMPTY_FORMSTATE);
+  };
+
+  console.log('form', formState);
   return (
     <Flex direction="column">
       <Input
@@ -40,21 +49,21 @@ const Form = (props) => {
         onChange={handleInputChange}
       />
 
-      <NumberInput
+      <Input
+        type="number"
+        placeholder="$$$$"
         mt="1rem"
-        value={amount || ''}
         name="amount"
+        value={amount || ''}
         onChange={handleInputChange}
-      >
-        <NumberInputField placeholder="$$$$" />
-      </NumberInput>
+      />
 
       <Flex mt="1rem" justify="space-between">
-        <Button colorScheme="teal" variant="outline">
+        <Button colorScheme="teal" variant="outline" onClick={addOnClick}>
           Add
         </Button>
 
-        <Button colorScheme="teal" variant="solid">
+        <Button colorScheme="teal" variant="solid" onClick={nextOnClick}>
           Next
         </Button>
       </Flex>
